@@ -19,6 +19,15 @@ class Media extends Model
         'user_id'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($media) {
+            $media->path = $media->file_name; // Or generate path as needed
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

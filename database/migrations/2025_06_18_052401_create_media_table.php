@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('mime_type')->nullable();
             $table->string('path');
             $table->string('disk')->default('public');
-            $table->unsignedBigInteger('size');
+            $table->unsignedBigInteger('size')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

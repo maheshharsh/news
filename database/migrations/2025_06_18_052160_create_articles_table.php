@@ -19,7 +19,7 @@ return new class extends Migration
             $table->longText('content');
             $table->string('featured_image')->nullable();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamp('published_at')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_published')->default(false);

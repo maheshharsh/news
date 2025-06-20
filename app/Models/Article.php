@@ -18,7 +18,7 @@ class Article extends Model
         'content',
         'featured_image',
         'category_id',
-        'author_id',
+        'user_id',
         'published_at',
         'is_featured',
         'is_published',
