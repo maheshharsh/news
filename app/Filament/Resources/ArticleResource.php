@@ -36,7 +36,7 @@ class ArticleResource extends Resource
                     ->relationship('category', 'name')
                     ->required(),
 
-                Select::make('user_is')
+                Select::make('user_id')
                     ->label('User')
                     ->relationship('author', 'name')
                     ->required(),
@@ -52,9 +52,7 @@ class ArticleResource extends Resource
                     ->image()
                     ->directory('articles')
                     ->disk('public')
-                    ->preserveFilenames()
-                    ->maxSize(2048)
-                    ->imagePreviewHeight('150'),
+                    ->preserveFilenames(),
 
                 DateTimePicker::make('published_at'),
 
