@@ -19,6 +19,18 @@
            ]);
        }
 
+       public function politicsIndex()
+       {
+           $politics = Article::with('category')
+           ->where('is_published', true)
+           ->latest()
+           ->get();
+           
+           return Inertia::render('politics/Index', [
+               'politics' => $politics,
+           ]);
+       }
+
        public function show($slug)
        {
            $article = Article::with('category')
@@ -30,4 +42,6 @@
                'article' => $article,
            ]);
        }
+
+
    }

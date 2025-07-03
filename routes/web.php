@@ -12,3 +12,4 @@ use App\Http\Controllers\ArticleController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('/politics', [ArticleController::class, 'politicsIndex'])->name('politics.index');

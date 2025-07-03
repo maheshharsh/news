@@ -2,15 +2,15 @@
 
 import React, { ReactNode, useEffect, useState } from "react";
 import { Link, Head } from "@inertiajs/react";
-import Carousel from "../components/Carousel";
-import CommodityCard from "../components/CommodityCard";
-import Advertisement from "../components/Advertisment";
-import NewsHeadlines from "../components/NewsHeadlines";
-import NewsBlock from "../components/NewsBlock";
-import { Card, CardContent } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
+import Carousel from "../../components/Carousel";
+import CommodityCard from "../../components/CommodityCard";
+import Advertisement from "../../components/Advertisment";
+import NewsHeadlines from "../../components/NewsHeadlines";
+import NewsBlock from "../../components/NewsBlock";
+import { Card, CardContent } from "../../components/ui/card";
+import { Badge } from "../../components/ui/badge";
 import { Clock } from "lucide-react";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 
 interface Article {
     created_at: ReactNode;
