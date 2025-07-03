@@ -27,7 +27,7 @@
            ->get();
            
            return Inertia::render('politics/Index', [
-               'politics' => $politics,
+               'articles' => $politics,
            ]);
        }
 
