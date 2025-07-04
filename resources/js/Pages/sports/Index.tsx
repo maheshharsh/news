@@ -22,8 +22,8 @@ interface Props {
 
 const Index: React.FC<Props> = ({ articles }) => {
     return (
-        <AppLayout currentRoute="/politics">
-            <Head title="Politics" />
+        <AppLayout currentRoute="/sports">
+            <Head title="Sports" />
             
             <div className="">
                 <NewsHeadlines />

@@ -14,7 +14,7 @@
            ->latest()
            ->get();
            
-           return Inertia::render('Index', [
+           return Inertia::render('Home', [
                'articles' => $articles,
            ]);
        }
@@ -27,6 +27,18 @@
            ->get();
            
            return Inertia::render('politics/Index', [
+               'articles' => $politics,
+           ]);
+       }
+
+       public function sportsIndex()
+       {
+           $politics = Article::with('category')
+           ->where('is_published', true)
+           ->latest()
+           ->get();
+           
+           return Inertia::render('sports/Index', [
                'articles' => $politics,
            ]);
        }
