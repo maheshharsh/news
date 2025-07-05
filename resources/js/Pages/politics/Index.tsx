@@ -24,11 +24,14 @@ const Index: React.FC<Props> = ({ articles }) => {
     return (
         <AppLayout currentRoute="/politics">
             <Head title="Politics" />
-            
+            <h1 className="font-bold text-4xl px-4 py-5">Politics</h1>
             <div className="">
                 <NewsHeadlines />
-                <NewsBlock />
-            </div>
+                <NewsBlock 
+                        title="Political Developments" 
+                        category="politics" 
+                        articles={articles.filter(a => a.category.name === 'Politics')}
+                    />            </div>
             {/* <FeaturedNews articles={articles} /> */}
         </AppLayout>
     );

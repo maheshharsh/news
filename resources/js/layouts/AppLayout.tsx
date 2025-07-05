@@ -9,31 +9,42 @@ interface MainLayoutProps {
 
 export default function AppLayout({ children, currentRoute }: MainLayoutProps) {
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col min-h-screen">
+            {/* Navbar */}
             <Navbar currentRoute={currentRoute} />
-            <div className="flex flex-1 overflow-hidden">
-                {/* Left Advertisement - Fixed */}
-                <div className="w-1/6 fixed left-0 top-0 bottom-0 z-40">
+
+            {/* Main Content Area */}
+            <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+                {/* Left Advertisement - Hidden on mobile, fixed on desktop */}
+                <div className="hidden lg:block lg:w-1/6 fixed left-0 top-0 bottom-0 z-40">
                     <Advertisement
                         firstImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
                         secondImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
-                        thirdImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
-                        forthImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
                     />
                 </div>
 
-                {/* Main Content - Scrollable */}
-                <main className="w-4/6 mx-auto overflow-y-auto px-4 mt-16">
+                {/* Main Content - Full width on mobile, centered on desktop */}
+                <main className="w-full lg:w-4/6 mx-auto overflow-y-auto px-4 pt-16 lg:pt-20 pb-4">
                     {children}
                 </main>
 
-                {/* Right Advertisement - Fixed */}
-                <div className="w-1/6 fixed right-0 top-0 bottom-0 z-40">
+                {/* Right Advertisement - Hidden on mobile, fixed on desktop */}
+                <div className="hidden lg:block lg:w-1/6 fixed right-0 top-0 bottom-0 z-40">
                     <Advertisement
                         firstImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
                         secondImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
-                        thirdImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
-                        forthImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
+                    />
+                </div>
+
+                {/* Mobile-only Advertisement - Displayed below content on mobile */}
+                <div className="block lg:hidden w-full px-4 py-1">
+                    <Advertisement
+                        firstImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
+                        secondImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
+                    />
+                    <Advertisement
+                        firstImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
+                        secondImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
                     />
                 </div>
             </div>

@@ -20,30 +20,40 @@ export default function NewsCard({ article }: NewsCardProps) {
                             : "https://via.placeholder.com/800x400?text=News+Image"
                     }
                     alt={article.title}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-64 sm:h-48 object-cover"
                     onError={(e) => {
                         e.currentTarget.src =
                             "https://via.placeholder.com/800x400?text=News+Image";
                     }}
                 />
-                <div className="absolute top-3 left-3">
-                    <Badge variant="secondary">{article.category.name}</Badge>
+                {/* Overlay for readability */}
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
+                    <CardContent className="p-4 text-white w-full">
+                        {/* Category Badge */}
+                        <div className="mb-2">
+                            <Badge
+                                variant="secondary"
+                                className="bg-blue-200 text-blue-900"
+                            >
+                                {article.category.name}
+                            </Badge>
+                        </div>
+                        {/* Title */}
+                        <h4 className="font-bold text-lg sm:text-base line-clamp-2">
+                            {article.title}
+                        </h4>
+                        {/* Content Snippet */}
+                        <p className="text-sm sm:text-xs mt-2 line-clamp-3">
+                            {article.content.substring(0, 100)}
+                        </p>
+                        {/* Timestamp */}
+                        <div className="flex items-center mt-3 text-xs sm:text-xs text-gray-200">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {article.created_at}
+                        </div>
+                    </CardContent>
                 </div>
             </div>
-            <CardContent className="p-4">
-                <h4 className="font-bold text-gray-900 mb-2 line-clamp-2">
-                    {article.title}
-                </h4>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {article.content.substring(0, 150)}
-                </p>
-                <div className="flex justify-between text-xs text-gray-500">
-                    <div className="flex items-center">
-                        <Clock className="h-3 w-3 mr-1" />
-                        {article.created_at}
-                    </div>
-                </div>
-            </CardContent>
         </Card>
     );
 }

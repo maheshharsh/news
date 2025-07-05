@@ -135,9 +135,8 @@ export default function Home({ articles }: Props) {
                     color="blue"
                 />
             </div>
-            
-            <div>
 
+            <div>
                 <section>
                     <h1 className="text-3xl font-bold mb-4">Latest News</h1>
                     <NewsCarousel items={carouselItems} />
@@ -145,9 +144,21 @@ export default function Home({ articles }: Props) {
 
                 <NewsHeadlines />
 
-                <div className="flex gap-2 mt-4">
-                    <NewsBlock />
-                    <NewsBlock />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <NewsBlock
+                        title="Political Developments"
+                        category="politics"
+                        articles={articles
+                            .filter((a) => a.category.name === "Politics")
+                            .slice(0, 4)}
+                    />
+                    <NewsBlock
+                        title="Business Updates"
+                        category="business"
+                        articles={articles
+                            .filter((a) => a.category.name === "Business")
+                            .slice(0, 4)}
+                    />
                 </div>
 
                 <FeaturedNews articles={articles} />
