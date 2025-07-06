@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvertisementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\HeadlinesController;
@@ -19,3 +20,5 @@ Route::get('/politics', [ArticleController::class, 'politicsIndex'])->name('poli
 Route::get('/sports', [ArticleController::class, 'sportsIndex'])->name('sports.index');
 
 Route::get('/headline/{id}', [HeadlinesController::class, 'show'])->name('headline.show');
+
+Route::get('/advertisements', [AdvertisementController::class, 'index']);

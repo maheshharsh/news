@@ -1,34 +1,31 @@
 import React from "react";
 
 interface AdvertisementProps {
-    firstImage?: string;
-    secondImage?: string;
+    adv_image?: string;
+    title?: string;
 }
 
-function Advertisement({
-    firstImage,
-    secondImage,
-}: AdvertisementProps) {
+const Advertisement: React.FC<AdvertisementProps> = ({ adv_image, title }) => {
     return (
-        <div className="bg-slate-100 h-full py-10 px-4 text-white font-bold text-center">
-            <h2 className="mt-10 text-2xl text-black">Advertisements</h2>
-
+        <div className="bg-slate-100 py-5 px-2 text-white font-bold text-center">
             <div className="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-                <img
-                    src={firstImage}
-                    alt="Advertisement 1"
-                    className="mt-7 w-full h-96 object-cover"
-                />
-            </div>
-            <div className="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-                <img
-                    src={secondImage}
-                    alt="Advertisement 4"
-                    className="mt-7 w-full h-96 object-cover"
-                />
+                {adv_image ? (
+                    <img
+                        src={adv_image}
+                        alt={title || "Advertisement"}
+                        className="w-full h-48 object-cover"
+                        loading="lazy"
+                    />
+                ) : (
+                    <div className="w-full h-48 flex items-center justify-center bg-gray-200 text-gray-500">
+                        <span className="text-sm font-medium">
+                            {title || "No Image Available"}
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );
-}
+};
 
 export default Advertisement;

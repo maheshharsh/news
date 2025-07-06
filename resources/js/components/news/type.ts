@@ -21,6 +21,11 @@ export interface HeadlinesProps {
     slug: string;
     time?: string;
 }
+export interface AdvertisementProps {
+    id: number;
+    title: string;
+    adv_image: string;
+}
 
 export interface FeaturedNewsProps {
     articles: Article[];

@@ -1,5 +1,3 @@
-// src/Pages/Index.tsx
-
 import React, { ReactNode, useEffect, useState } from "react";
 import { Link, Head } from "@inertiajs/react";
 import NewsHeadlines from "../../components/NewsHeadlines";
@@ -28,7 +26,6 @@ const Index: React.FC<Props> = ({ articles, headlines }) => {
                     )}
                 />{" "}
             </div>
-            {/* <FeaturedNews articles={articles} /> */}
         </AppLayout>
     );
 };
