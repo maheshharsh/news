@@ -5,34 +5,25 @@ import { Link, Head } from "@inertiajs/react";
 import NewsHeadlines from "../../components/NewsHeadlines";
 import NewsBlock from "../../components/NewsBlock";
 import AppLayout from "../../layouts/AppLayout";
-
-interface Article {
-    created_at: ReactNode;
-    id: number;
-    title: string;
-    slug: string;
-    content: string;
-    category: { name: string };
-    image?: string;
-}
+import { Article, HeadlinesProps } from "../../components/news/type";
 
 interface Props {
     articles: Article[];
+    headlines: HeadlinesProps[];
 }
 
-const Index: React.FC<Props> = ({ articles }) => {
+const Index: React.FC<Props> = ({ articles, headlines }) => {
     return (
         <AppLayout currentRoute="/sports">
             <Head title="Sports" />
             <h1 className="font-bold text-4xl px-4 py-4">Sports</h1>
             <div className="">
-                <NewsHeadlines />
-                <NewsBlock 
-                        title="Political Developments" 
-                        category="politics" 
-                        articles={articles.filter(a => a.category.name === 'Politics')}
+            <NewsHeadlines headlines={headlines} />
+            <NewsBlock 
+                        title="Sports Developments" 
+                        category="Sports" 
+                        articles={articles.filter(a => a.category.name === 'Sports')}
                     />            </div>
-            {/* <FeaturedNews articles={articles} /> */}
         </AppLayout>
     );
 };

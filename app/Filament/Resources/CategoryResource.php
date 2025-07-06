@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\ColorPicker;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -38,7 +37,6 @@ class CategoryResource extends Resource
                 Textarea::make('description')
                     ->maxLength(1000)
                     ->rows(4),
-
             ]);
     }
 
@@ -49,19 +47,26 @@ class CategoryResource extends Resource
                 TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('slug')->searchable()->sortable(),
                 TextColumn::make('description')->limit(50),
-    
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->hidden(fn ($record) => in_array(strtolower($record->name), ['sports', 'politics'])),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(fn ($record) => in_array(strtolower($record->name), ['sports', 'politics'])),
                 Tables\Actions\ViewAction::make(),
             ])            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function ($records) {
+                            // Filter out protected categories before deletion
+                            $records->filter(function ($record) {
+                                return !in_array(strtolower($record->name), ['sports', 'politics']);
+                            })->each->delete();
+                        }),
                 ]),
             ]);
     }

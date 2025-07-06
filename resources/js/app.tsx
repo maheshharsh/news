@@ -10,7 +10,6 @@ createInertiaApp({
     return page;
   },
   setup({ el, App, props }) {
-    console.log('Inertia setup:', { page: props.initialPage.component }); // Debug
     const root = createRoot(el);
     root.render(<App {...props} />);
   },

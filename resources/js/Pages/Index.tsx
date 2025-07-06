@@ -207,8 +207,6 @@ const Index: React.FC<Props> = ({ articles }) => {
                     <Advertisement
                         firstImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
                         secondImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
-                        thirdImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
-                        forthImage="https://images.unsplash.com/photo-1586339949916-3e9457bef6d3"
                     />
                 </div>
             </div>

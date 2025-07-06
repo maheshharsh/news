@@ -58,6 +58,7 @@ class ArticleResource extends Resource
 
                 Toggle::make('is_featured')->label('Featured'),
                 Toggle::make('is_published')->label('Published'),
+                Toggle::make('is_carousel')->label('Carousel'),
 
                 TextInput::make('meta_title')
                     ->maxLength(255),
@@ -94,6 +95,7 @@ class ArticleResource extends Resource
 
                 IconColumn::make('is_featured')->boolean()->label('Featured'),
                 IconColumn::make('is_published')->boolean()->label('Published'),
+                IconColumn::make('is_carousel')->boolean()->label('Carousel'),
 
                 TextColumn::make('published_at')
                     ->dateTime()

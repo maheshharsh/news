@@ -10,25 +10,36 @@ class Headline extends Model
 {
     use SoftDeletes;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'headlines';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'title',
         'content',
-        'featured_image',
         'category_id',
         'slug',
     ];
+
+    protected $appends = ['category_name', 'time'];
+
+    /**
+     * Get the category name attribute.
+     *
+     * @return string|null
+     */
+    public function getCategoryNameAttribute()
+    {
+        return $this->category ? $this->category->name : null;
+    }
+
+    /**
+     * Get the formatted created_at date.
+     *
+     * @return string|null
+     */
+    public function getTimeAttribute()
+    {
+        return $this->created_at ? $this->created_at->format('d/m/Y') : null;
+    }
 
     /**
      * The attributes that should be cast.
@@ -58,7 +69,6 @@ class Headline extends Model
         static::creating(function ($headline) {
             if (empty($headline->slug)) {
                 $headline->slug = Str::slug($headline->title);
-                // Ensure slug is unique
                 $originalSlug = $headline->slug;
                 $count = 1;
                 while (self::where('slug', $headline->slug)->exists()) {
@@ -70,7 +80,6 @@ class Headline extends Model
         static::updating(function ($headline) {
             if ($headline->isDirty('title') && empty($headline->slug)) {
                 $headline->slug = Str::slug($headline->title);
-                // Ensure slug is unique
                 $originalSlug = $headline->slug;
                 $count = 1;
                 while (self::where('slug', $headline->slug)->where('id', '!=', $headline->id)->exists()) {
@@ -85,6 +94,6 @@ class Headline extends Model
      */
     public function getFeaturedImageAttribute($value): ?string
     {
-        return $value ? asset('storage/' . $value) : null;
+        return $value ? asset('storage/' .$value) : null;
     }
 }

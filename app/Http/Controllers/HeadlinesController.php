@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Headline;
+use Exception;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HeadlinesController extends Controller
 {
@@ -34,9 +36,12 @@ class HeadlinesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Headline $headlines)
-    {
-        //
+    public function show(Request $request)
+    {    
+        $headline = Headline::findOrFail($request->id);
+        return Inertia::render('headlines/show', [
+            'headlines' => $headline,
+        ]);
     }
 
     /**

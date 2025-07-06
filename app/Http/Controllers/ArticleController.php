@@ -1,59 +1,77 @@
 <?php
 
-   namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-   use App\Models\Article;
-   use Inertia\Inertia;
+use App\Models\Article;
+use App\Models\Headline;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
 
-   class ArticleController extends Controller
-   {
-       public function index()
-       {
-           $articles = Article::with('category')
-           ->where('is_published', true)
-           ->latest()
-           ->get();
-           
-           return Inertia::render('Home', [
-               'articles' => $articles,
-           ]);
-       }
+class ArticleController extends Controller
+{
+    public function home()
+    {
+        $articles = Article::with('category')
+            ->where('is_published', true)
+            ->latest()
+            ->get();
 
-       public function politicsIndex()
-       {
-           $politics = Article::with('category')
-           ->where('is_published', true)
-           ->latest()
-           ->get();
-           
-           return Inertia::render('politics/Index', [
-               'articles' => $politics,
-           ]);
-       }
+        $headlines = Headline::with('category')
+            ->latest()
+            ->get();
 
-       public function sportsIndex()
-       {
-           $politics = Article::with('category')
-           ->where('is_published', true)
-           ->latest()
-           ->get();
-           
-           return Inertia::render('sports/Index', [
-               'articles' => $politics,
-           ]);
-       }
+        return Inertia::render('Home', [
+            'articles' => $articles,
+            'headlines' => $headlines,
+        ]);
+    }
 
-       public function show($slug)
-       {
-           $article = Article::with('category')
-               ->where('slug', $slug)
-               ->where('is_published', true)
-               ->firstOrFail();
+    public function politicsIndex()
+    {
+        $politics = Article::with('category')
+            ->where('is_published', true)
+            ->latest()
+            ->get();
+    
+        $headlines = Headline::with('category')
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'Politics'); 
+            })
+            ->latest()
+            ->get();
+    
+        return Inertia::render('politics/Index', [
+            'articles' => $politics,
+            'headlines' => $headlines,
+        ]);
+    }
 
-           return Inertia::render('Show', [
-               'article' => $article,
-           ]);
-       }
+    public function sportsIndex()
+    {
+        $politics = Article::with('category')
+            ->where('is_published', true)
+            ->latest()
+            ->get();
+    
+        $headlines = Headline::with('category')
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'Sports'); 
+            })
+            ->latest()
+            ->get();
+    
+        return Inertia::render('sports/Index', [
+            'articles' => $politics,
+            'headlines' => $headlines,
+        ]);
+    }
 
+    public function show(Request $request)
+    {
+        $article = Article::findorFail($request->id);
 
-   }
+        return Inertia::render('article/show', [
+            'article' => $article,
+        ]);
+    }
+}

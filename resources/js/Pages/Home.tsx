@@ -1,29 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import AppLayout from "../layouts/AppLayout";
-import CommodityCards from "../components/CommodityCard";
+import CommodityCard from "../components/CommodityCard";
 import NewsCarousel from "../components/Carousel";
 import NewsHeadlines from "../components/NewsHeadlines";
-import NewsBlocks from "../components/NewsBlock";
-import FeaturedNews from "../components/FeaturedNews";
-import CommodityCard from "../components/CommodityCard";
 import NewsBlock from "../components/NewsBlock";
-
-interface Article {
-    id: number;
-    title: string;
-    slug: string;
-    content: string;
-    category: { name: string };
-    featured_image?: string;
-    created_at: string;
-}
+import FeaturedNews from "../components/FeaturedNews";
+import { Article, HeadlinesProps } from "../components/news/type";
+import sanitizeHtml from "sanitize-html";
 
 interface Props {
     articles: Article[];
+    headlines: HeadlinesProps[];
 }
 
-export default function Home({ articles }: Props) {
+export default function Home({ articles, headlines }: Props) {
     const [prices, setPrices] = useState({
         gold: 0,
         silver: 0,
@@ -56,57 +47,42 @@ export default function Home({ articles }: Props) {
         return () => clearInterval(interval);
     }, []);
 
-    const carouselItems = [
-        {
-            image: "https://images.unsplash.com/photo-1586339949916-3e9457bef6d3",
-            category: "BREAKING",
-            title: "Global Summit Addresses Climate Change",
-            content:
-                "World leaders gather to discuss urgent climate action plans...",
-        },
-        {
-            image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
-            category: "TECHNOLOGY",
-            title: "New AI Breakthrough Revolutionizes Healthcare",
-            content:
-                "Researchers develop AI that can predict diseases with 95% accuracy...",
-        },
-        {
-            image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e",
-            category: "SPORTS",
-            title: "National Team Wins Championship After Decade",
-            content:
-                "Historic victory celebrated nationwide as underdogs take the title...",
-        },
-    ].map((item, index) => (
-        <div key={index} className="h-96 relative overflow-hidden rounded-lg">
-            <img
-                src={`${item.image}?auto=format&fit=crop&w=800&h=400&q=80`}
-                alt={item.category}
-                className="w-full h-full object-cover absolute inset-0"
-                onError={(e) => {
-                    e.currentTarget.src = `https://via.placeholder.com/800x400?text=${item.category}+Image`;
-                }}
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
-                <div className="text-white">
-                    <span
-                        className={`${
-                            item.category === "BREAKING"
-                                ? "bg-red-600"
-                                : item.category === "TECHNOLOGY"
-                                ? "bg-blue-600"
-                                : "bg-green-600"
-                        } text-xs font-semibold px-2 py-1 rounded`}
-                    >
-                        {item.category}
-                    </span>
-                    <h2 className="text-3xl font-bold mt-2">{item.title}</h2>
-                    <p className="mt-2">{item.content}</p>
-                </div>
-            </div>
-        </div>
-    ));
+    // Sanitize HTML content for safe rendering
+    const sanitizeContent = (content: string) =>
+        sanitizeHtml(content, {
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+                "img",
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "ul",
+                "ol",
+                "li",
+                "a",
+                "p",
+                "b",
+                "i",
+                "strong",
+                "em",
+            ]),
+            allowedAttributes: {
+                a: ["href", "target", "rel"],
+                img: ["src", "alt", "width", "height"],
+            },
+        });
+
+    // Filter carousel articles with fallback
+    const carouselArticles = articles.filter((article) => article.is_carousel).length
+        ? articles.filter((article) => article.is_carousel)
+        : articles.slice(0, 3);
+
+    // Get unique categories
+    const uniqueCategories = Array.from(
+        new Set(articles.map((article) => article.category.name).filter(Boolean))
+    );
 
     return (
         <AppLayout currentRoute="/">
@@ -137,31 +113,78 @@ export default function Home({ articles }: Props) {
             </div>
 
             <div>
+                {/* Carousel Section */}
                 <section>
                     <h1 className="text-3xl font-bold mb-4">Latest News</h1>
-                    <NewsCarousel items={carouselItems} />
+                    {carouselArticles.length > 0 ? (
+                        <NewsCarousel
+                            items={carouselArticles.map((article, index) => (
+                                <Link
+                                    key={index}
+                                    href={`/articles/${article.id}`}
+                                    className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden block"
+                                >
+                                    {/* Featured Image */}
+                                    {article.featured_image && (
+                                        <img
+                                            src={article.image}
+                                            alt={article.title}
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.currentTarget.src =
+                                                    "https://via.placeholder.com/800x400?text=News+Image";
+                                            }}
+                                        />
+                                    )}
+                                    {/* Overlay for Text */}
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-4">
+                                        <h2 className="text-2xl font-bold mb-2">
+                                            {article.title}
+                                        </h2>
+                                        <div
+                                            className="text-sm line-clamp-3"
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizeContent(
+                                                    article.content
+                                                ),
+                                            }}
+                                        />
+                                    </div>
+                                </Link>
+                            ))}
+                            autoPlay={true}
+                            interval={3000}
+                            showControls={true}
+                            showIndicators={true}
+                        />
+                    ) : (
+                        <p className="text-gray-500">
+                            No carousel articles available.
+                        </p>
+                    )}
                 </section>
-
-                <NewsHeadlines />
-
+                <NewsHeadlines headlines={headlines} />
+                <FeaturedNews
+                    articles={articles.filter((article) => article.is_featured)}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                    <NewsBlock
-                        title="Political Developments"
-                        category="politics"
-                        articles={articles
-                            .filter((a) => a.category.name === "Politics")
-                            .slice(0, 4)}
-                    />
-                    <NewsBlock
-                        title="Business Updates"
-                        category="business"
-                        articles={articles
-                            .filter((a) => a.category.name === "Business")
-                            .slice(0, 4)}
-                    />
+                    {uniqueCategories.length > 0 ? (
+                        uniqueCategories.map((category, index) => (
+                            <NewsBlock
+                                key={index}
+                                title={`${category} News`}
+                                category={category.toLowerCase()}
+                                articles={articles
+                                    .filter((a) => a.category.name === category)
+                                    .slice(0, 4)}
+                            />
+                        ))
+                    ) : (
+                        <p className="text-gray-500">
+                            No categories available.
+                        </p>
+                    )}
                 </div>
-
-                <FeaturedNews articles={articles} />
             </div>
         </AppLayout>
     );

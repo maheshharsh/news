@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\HeadlinesResource\Pages;
-use App\Filament\Resources\HeadlinesResource\RelationManagers;
+use App\Filament\Resources\HeadlineResource\Pages;
+use App\Filament\Resources\HeadlineResource\RelationManagers;
 use App\Models\Headline;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -20,11 +20,6 @@ class HeadlineResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
 
-    protected static ?string $navigationLabel = 'Headlines';
-        
-    protected static ?int $navigationSort = 2;
-
-
     public static function form(Form $form): Form
     {
         return $form
@@ -40,11 +35,6 @@ class HeadlineResource extends Resource
                     }),
                 Forms\Components\Textarea::make('content')
                     ->required()
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('featured_image')
-                    ->image()
-                    ->directory('headlines')
-                    ->nullable()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
@@ -69,9 +59,6 @@ class HeadlineResource extends Resource
                     ->label('Category')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('featured_image')
-                    ->getStateUsing(fn ($record) => $record->featured_image ? asset('storage/' . $record->featured_image) : null)
-                    ->circular(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
@@ -84,10 +71,9 @@ class HeadlineResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -110,9 +96,9 @@ class HeadlineResource extends Resource
     {
         return [
             'index' => Pages\ListHeadlines::route('/'),
-            'create' => Pages\CreateHeadlines::route('/create'),
-            'edit' => Pages\EditHeadlines::route('/{record}/edit'),
-            'view' => Pages\ViewHeadlines::route('/{record}'),
+            'create' => Pages\CreateHeadline::route('/create'),
+            'edit' => Pages\EditHeadline::route('/{record}/edit'),
+            'view' => Pages\ViewHeadline::route('/{record}'),
         ];
     }
 

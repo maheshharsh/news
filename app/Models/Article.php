@@ -23,14 +23,29 @@ class Article extends Model
         'is_featured',
         'is_published',
         'meta_title',
-        'meta_description'
+        'meta_description',
+        'is_carousel'
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
         'is_featured' => 'boolean',
+        'is_carousel' => 'boolean',
         'is_published' => 'boolean',
     ];
+
+    protected $appends = ['category_name', 'image'];
+
+    /**
+     * Get the category name attribute.
+     *
+     * @return string|null
+     */
+    public function getCategoryNameAttribute()
+    {
+        return $this->category_id ? $this->category->name : null;
+    }
+
 
     public function category(): BelongsTo
     {
@@ -52,8 +67,19 @@ class Article extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function getFeaturedImageUrlAttribute()
+    /**
+     * Get the featured image URL with storage path.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getImageAttribute($value): ?string
     {
-        return $this->featured_image ? asset('storage/' . $this->featured_image) : null;
+        return $this->featured_image ? asset('/storage/' . $this->featured_image) : null;
+    }
+
+    public function getPublishedAtAttribute($value): ?string
+    {
+        return $value ? date("d M Y", strtotime($value)) : null;
     }
 }

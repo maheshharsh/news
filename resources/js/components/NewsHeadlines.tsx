@@ -1,63 +1,17 @@
 import React from "react";
+import { Link } from "@inertiajs/react"; // Import Inertia's Link component
+interface HeadlinesProps {
+    id: number;
+    title: string;
+    content: string;
+    category_name: string; // Changed from number to string
+    slug: string;
+    time?: string;
+}
 
-const NewsHeadlines = () => {
-    const headlines = [
-        {
-            title: "What India is hoping for on US deal: Up to 20% tariff differential vis-a-vis China rate",
-            category: "Trade",
-            time: "2h ago",
-        },
-        {
-            title: "What India is hoping for on US deal: Up to 20% tariff differential vis-a-vis China rate",
-            category: "Trade",
-        },
-        {
-            title: "Centre gives states legal footing to allow bike taxis on Uber, Rapido: What this means",
-            category: "Transport",
-        },
-        {
-            title: "HDB Financial Services' lists at 13% premium over IPO price",
-            category: "Finance",
-        },
-        {
-            title: "Strawberry & pomegranate up, cereals down: Agriculture output report",
-            category: "Agriculture",
-        },
-        {
-            title: "Opportunity for India to become a major sustainable aviation fuel hub, says IATA's Preeti Jain",
-            category: "Energy",
-        },
-        {
-            title: "Cabinet approves Employment-Linked Incentive scheme to support formal job generation",
-            category: "Policy",
-        },
-        {
-            title: "India's IPO market eyes $2.4 billion in offerings in July as confidence rebounds",
-            category: "Finance",
-        },
-        {
-            title: "Cabinet approves four-laning of key section on NH-87 linking Rameswaram",
-            category: "Infrastructure",
-        },
-        {
-            title: "India Energy Stack: How this digital integration plan hopes to replicate UPI's success in India's power sector",
-            category: "Technology",
-        },
-    ];
-
-    const categoryColors = {
-        Trade: "bg-blue-100 text-blue-800",
-        Transport: "bg-green-100 text-green-800",
-        Finance: "bg-purple-100 text-purple-800",
-        Agriculture: "bg-yellow-100 text-yellow-800",
-        Energy: "bg-red-100 text-red-800",
-        Policy: "bg-indigo-100 text-indigo-800",
-        Infrastructure: "bg-pink-100 text-pink-800",
-        Technology: "bg-teal-100 text-teal-800",
-    };
-
+const NewsHeadlines = ({ headlines }: { headlines: HeadlinesProps[] }) => {  
     return (
-        <div className="my-2 mx-auto p-4 md:p-6 bg-white rounded-xl shadow-lg ">
+        <div className="my-2 mx-auto p-4 md:p-6 bg-white rounded-xl ">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
                     Latest Headlines
@@ -65,7 +19,7 @@ const NewsHeadlines = () => {
             </div>
 
             <div className="space-y-4">
-                {headlines.map((headline, index) => (
+                {(headlines).map((headline, index) => (
                     <div
                         key={index}
                         className="group p-4 hover:bg-gray-50 rounded-xl transition-all duration-200 border border-gray-200 hover:border-blue-200 hover:shadow-sm"
@@ -74,13 +28,9 @@ const NewsHeadlines = () => {
                             {/* Category and Time */}
                             <div className="flex items-center mb-2 md:mb-0 ">
                                 <span
-                                    className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${
-                                        categoryColors[
-                                            headline.category as keyof typeof categoryColors
-                                        ] || "bg-gray-100 text-gray-800"
-                                    }`}
+                                    className={`inline-block px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800`}
                                 >
-                                    {headline.category}
+                                    {headline.category_name}
                                 </span>
                             </div>
 
@@ -109,7 +59,10 @@ const NewsHeadlines = () => {
                                     </svg>
                                     {headline.time}
                                 </div>
-                                <button className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center md:mt-1">
+                                <Link
+                                    href={`/headline/${headline.id}`}
+                                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center md:mt-1"
+                                >
                                     Read
                                     <svg
                                         className="w-4 h-4 ml-1"
@@ -124,7 +77,7 @@ const NewsHeadlines = () => {
                                             d="M9 5l7 7-7 7"
                                         />
                                     </svg>
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

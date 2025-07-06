@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\HeadlinesResource\Pages;
+namespace App\Filament\Resources\HeadlineResource\Pages;
 
 use App\Filament\Resources\HeadlineResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\EditRecord;
 
-class ListHeadlines extends ListRecords
+class EditHeadline extends EditRecord
 {
     protected static string $resource = HeadlineResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
 }
