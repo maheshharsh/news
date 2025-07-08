@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Commodities;
 use App\Models\Headline;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -20,9 +21,13 @@ class ArticleController extends Controller
             ->latest()
             ->get();
 
+        $commodities = Commodities::latest()
+            ->get();
+
         return Inertia::render('Home', [
             'articles' => $articles,
             'headlines' => $headlines,
+            'commodities' => $commodities,
         ]);
     }
 

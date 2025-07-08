@@ -9,6 +9,9 @@ interface NewsCardProps {
 }
 
 export default function NewsCard({ article }: NewsCardProps) {
+    // Default image URL (use a public asset or external placeholder)
+    const defaultImage = "/images/default_image.jpg"; // Adjust to match your public directory structure
+
     return (
         <Link  href={`/articles/${article.id}`}
         className="block">
@@ -18,13 +21,13 @@ export default function NewsCard({ article }: NewsCardProps) {
                         src={
                             article.image
                                 ? article.image
-                                : "https://via.placeholder.com/800x400?text=News+Image"
+                                : defaultImage
                         }
                         alt={article.title}
                         className="w-full h-64 sm:h-48 object-cover"
                         onError={(e) => {
                             e.currentTarget.src =
-                                "https://via.placeholder.com/800x400?text=News+Image";
+                            defaultImage;
                         }}
                     />
                     {/* Overlay for readability */}

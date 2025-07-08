@@ -47,7 +47,7 @@ export default function AppLayout({ children, currentRoute }: MainLayoutProps) {
             {/* Main Content Area */}
             <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
                 {/* Mobile-only Advertisements - Displayed at the top on mobile */}
-                <div className="block lg:hidden w-full px-4 py-1">
+                <div className="block lg:hidden w-full px-4 py-1 mt-14">
                     {advertisements.length > 0 ? (
                         advertisements.map((ad) => (
                             <Advertisement

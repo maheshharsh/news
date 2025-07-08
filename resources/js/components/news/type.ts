@@ -21,6 +21,12 @@ export interface HeadlinesProps {
     slug: string;
     time?: string;
 }
+export interface CommodityPrices {
+    title: string;
+    price: number;
+    created_at: string;
+}
+
 export interface AdvertisementProps {
     id: number;
     title: string;
