@@ -95,13 +95,9 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('featured_images')
+                ImageColumn::make('featured_image')
                     ->label('Image')
                     ->disk('public')
-                    ->getStateUsing(function ($record) {
-                        // Return the first media file's file_name or null
-                        return $record->media->first()?->file_name;
-                    })
                     ->height(60),
     
                 TextColumn::make('title')->searchable()->sortable(),

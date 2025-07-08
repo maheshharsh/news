@@ -17,9 +17,6 @@ return new class extends Migration
                   ->onDelete('cascade')
                   ->nullable(false);
         });
-        Schema::table('articles', function (Blueprint $table) {
-            $table->dropColumn('featured_image');
-        });
     }
 
     /**
@@ -30,9 +27,6 @@ return new class extends Migration
         Schema::table('media', function (Blueprint $table) {
             $table->dropForeign(['article_id']);
             $table->dropColumn('article_id');
-        });
-        Schema::table('articles', function (Blueprint $table) {
-            $table->string('featured_image')->nullable(); // adjust type if needed
         });
     }
 };
