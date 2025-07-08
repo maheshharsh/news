@@ -48,11 +48,28 @@ class ArticleResource extends Resource
                     ->required()
                     ->columnSpanFull(),
 
-                FileUpload::make('featured_image')
+                // FileUpload::make('featured_image')
+                //     ->image()
+                //     ->directory('articles')
+                //     ->disk('public')
+                //     ->preserveFilenames(),
+
+                FileUpload::make('featured_images')
+                    ->multiple()
                     ->image()
                     ->directory('articles')
                     ->disk('public')
-                    ->preserveFilenames(),
+                    ->preserveFilenames()
+                    ->relationship('media', 'file_name') // Links to the media relationship, storing file name in file_name column
+                    ->enableReordering()
+                    ->enableOpen()
+                    ->enableDownload()
+                    ->afterStateUpdated(function ($state, $set, $record) {
+                        // Optional: Sync media records if needed
+                        if ($record && $state) {
+                            $record->media()->whereNotIn('file_name', $state)->delete();
+                        }
+                    }),
 
                 DateTimePicker::make('published_at'),
 
@@ -78,29 +95,33 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('featured_image')
+                ImageColumn::make('featured_images')
                     ->label('Image')
                     ->disk('public')
+                    ->getStateUsing(function ($record) {
+                        // Return the first media file's file_name or null
+                        return $record->media->first()?->file_name;
+                    })
                     ->height(60),
-
+    
                 TextColumn::make('title')->searchable()->sortable(),
-
+    
                 TextColumn::make('author.name')
                     ->label('Author')
                     ->searchable(),
-
+    
                 TextColumn::make('category.name')
                     ->label('Category')
                     ->searchable(),
-
+    
                 IconColumn::make('is_featured')->boolean()->label('Featured'),
                 IconColumn::make('is_published')->boolean()->label('Published'),
                 IconColumn::make('is_carousel')->boolean()->label('Carousel'),
-
+    
                 TextColumn::make('published_at')
                     ->dateTime()
                     ->sortable(),
-
+    
                 TagsColumn::make('tags.name')->label('Tags'),
             ])
             ->filters([
@@ -116,7 +137,6 @@ class ArticleResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
     public static function getRelations(): array
     {
         return [
