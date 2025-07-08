@@ -22,28 +22,28 @@ class Media extends Model
         'article_id',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($media) {
-            // Set the path to the storage directory
-            $media->path = 'articles'; // Matches the directory in FileUpload
-            $media->disk = 'public'; // Matches the disk in FileUpload
-            $media->user_id = Auth::id(); // Set the current user as the uploader
-        });
+    //     static::creating(function ($media) {
+    //         // Set the path to the storage directory
+    //         $media->path = 'articles'; // Matches the directory in FileUpload
+    //         $media->disk = 'public'; // Matches the disk in FileUpload
+    //         $media->user_id = Auth::id(); // Set the current user as the uploader
+    //     });
 
-        static::saving(function ($media) {
-            // Update mime_type and size if not set
-            if ($media->file_name && !$media->mime_type) {
-                $filePath = storage_path('app/public/articles/' . $media->file_name);
-                if (file_exists($filePath)) {
-                    $media->mime_type = mime_content_type($filePath);
-                    $media->size = filesize($filePath);
-                }
-            }
-        });
-    }
+    //     static::saving(function ($media) {
+    //         // Update mime_type and size if not set
+    //         if ($media->file_name && !$media->mime_type) {
+    //             $filePath = storage_path('app/public/articles/' . $media->file_name);
+    //             if (file_exists($filePath)) {
+    //                 $media->mime_type = mime_content_type($filePath);
+    //                 $media->size = filesize($filePath);
+    //             }
+    //         }
+    //     });
+    // }
 
     public function article(): BelongsTo
     {

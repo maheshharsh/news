@@ -4,13 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
+use App\Models\Media;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\{TextInput, Select, FileUpload, DateTimePicker, Toggle, RichEditor, TagsInput};
+use Filament\Forms\Components\{TextInput, Select, FileUpload, DateTimePicker, Fieldset, Toggle, RichEditor, TagsInput};
 use Filament\Tables\Columns\{TextColumn, IconColumn, ImageColumn, TagsColumn};
 
 class ArticleResource extends Resource
@@ -52,30 +53,32 @@ class ArticleResource extends Resource
                     ->image()
                     ->directory('articles')
                     ->disk('public')
-                    ->preserveFilenames(),
+                    ->preserveFilenames()
+                    ->columnSpan('full') ,
 
-                // FileUpload::make('featured_images')
-                //     ->multiple()
-                //     ->image()
-                //     ->directory('articles')
-                //     ->disk('public')
-                //     ->preserveFilenames()
-                //     ->relationship('media', 'file_name') // Links to the media relationship, storing file name in file_name column
-                //     ->enableReordering()
-                //     ->enableOpen()
-                //     ->enableDownload()
-                //     ->afterStateUpdated(function ($state, $set, $record) {
-                //         // Optional: Sync media records if needed
-                //         if ($record && $state) {
-                //             $record->media()->whereNotIn('file_name', $state)->delete();
-                //         }
-                //     }),
+                FileUpload::make('featured_images')
+                    ->multiple()
+                    ->image()
+                    ->directory('articles')
+                    ->disk('public')
+                    ->panelLayout('grid')
+                    ->columnSpan('full')
+                    ->preserveFilenames()
+                    ->afterStateHydrated(function (callable $set, $state, $record) {
+                        if ($record) {
+                            $paths = $record->media->pluck('path')->toArray();
+                            $set('featured_images', $paths);
+                        }
+                    }),
 
+                Fieldset::make('')
+                    ->columns('3')
+                    ->schema([
+                        Toggle::make('is_featured')->label('Featured'),
+                        Toggle::make('is_published')->label('Published'),
+                        Toggle::make('is_carousel')->label('Carousel'),
+                    ]),
                 DateTimePicker::make('published_at'),
-
-                Toggle::make('is_featured')->label('Featured'),
-                Toggle::make('is_published')->label('Published'),
-                Toggle::make('is_carousel')->label('Carousel'),
 
                 TextInput::make('meta_title')
                     ->maxLength(255),
@@ -99,25 +102,25 @@ class ArticleResource extends Resource
                     ->label('Image')
                     ->disk('public')
                     ->height(60),
-    
+
                 TextColumn::make('title')->searchable()->sortable(),
-    
+
                 TextColumn::make('author.name')
                     ->label('Author')
                     ->searchable(),
-    
+
                 TextColumn::make('category.name')
                     ->label('Category')
                     ->searchable(),
-    
+
                 IconColumn::make('is_featured')->boolean()->label('Featured'),
                 IconColumn::make('is_published')->boolean()->label('Published'),
                 IconColumn::make('is_carousel')->boolean()->label('Carousel'),
-    
+
                 TextColumn::make('published_at')
                     ->dateTime()
                     ->sortable(),
-    
+
                 TagsColumn::make('tags.name')->label('Tags'),
             ])
             ->filters([
