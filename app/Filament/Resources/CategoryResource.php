@@ -14,6 +14,8 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
+
 
 class CategoryResource extends Resource
 {
@@ -27,8 +29,12 @@ class CategoryResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
-                
+                    ->maxLength(255)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('slug', Str::slug($state));
+                    }),
+
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
@@ -53,11 +59,11 @@ class CategoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->hidden(fn ($record) => in_array(strtolower($record->name), ['sports', 'politics'])),
+                    ->hidden(fn($record) => in_array(strtolower($record->name), ['sports', 'politics'])),
                 Tables\Actions\DeleteAction::make()
-                    ->hidden(fn ($record) => in_array(strtolower($record->name), ['sports', 'politics'])),
+                    ->hidden(fn($record) => in_array(strtolower($record->name), ['sports', 'politics'])),
                 Tables\Actions\ViewAction::make(),
-            ])            
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
@@ -84,7 +90,7 @@ class CategoryResource extends Resource
             'index' => Pages\ListCategories::route('/'),
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
-            'view' => Pages\ViewCategory::route('/{record}'), 
+            'view' => Pages\ViewCategory::route('/{record}'),
         ];
     }
 }

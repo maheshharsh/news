@@ -55,8 +55,13 @@ class Media extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getUrlAttribute()
+    // public function getPathAttribute()
+    // {
+    //     return asset('storage/' . $this->path);
+    // }
+
+    public function getPathAttribute($value): ?string
     {
-        return asset('storage/' . $this->path . '/' . $this->file_name);
+        return $value ? asset('/storage/' . $value) : null;
     }
 }

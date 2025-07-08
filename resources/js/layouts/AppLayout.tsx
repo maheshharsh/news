@@ -22,9 +22,7 @@ export default function AppLayout({ children, currentRoute }: MainLayoutProps) {
     useEffect(() => {
         const fetchAdvertisements = async () => {
             try {
-                const response = await axios.get(
-                    "/advertisements"
-                );
+                const response = await axios.get("/advertisements");
                 setAdvertisements(response.data.data);
             } catch (error) {
                 console.error("Error fetching advertisements:", error);
@@ -66,20 +64,13 @@ export default function AppLayout({ children, currentRoute }: MainLayoutProps) {
 
                 {/* Left Advertisements - Hidden on mobile, scrollable on desktop */}
                 <div className="hidden lg:block lg:w-1/6 fixed left-0 top-16 bottom-0 z-40 overflow-y-auto space-y-2">
-                    {leftAds.length > 0 ? (
-                        leftAds.map((ad) => (
-                            <Advertisement
-                                key={ad.id}
-                                adv_image={ad.adv_image ?? undefined}
-                                title={ad.title}
-                            />
-                        ))
-                    ) : (
+                    {leftAds.map((ad) => (
                         <Advertisement
-                            adv_image={undefined}
-                            title="Placeholder Ad"
+                            key={ad.id}
+                            adv_image={ad.adv_image ?? undefined}
+                            title={ad.title}
                         />
-                    )}
+                    ))}
                 </div>
 
                 {/* Main Content - Full width on mobile, centered on desktop */}
@@ -89,20 +80,13 @@ export default function AppLayout({ children, currentRoute }: MainLayoutProps) {
 
                 {/* Right Advertisements - Hidden on mobile, scrollable on desktop */}
                 <div className="hidden lg:block lg:w-1/6 fixed right-0 top-16 bottom-0 z-40 overflow-y-auto space-y-2">
-                    {rightAds.length > 0 ? (
-                        rightAds.map((ad) => (
-                            <Advertisement
-                                key={ad.id}
-                                adv_image={ad.adv_image ?? undefined}
-                                title={ad.title}
-                            />
-                        ))
-                    ) : (
+                    {rightAds.map((ad) => (
                         <Advertisement
-                            adv_image={undefined}
-                            title="Placeholder Ad"
+                            key={ad.id}
+                            adv_image={ad.adv_image ?? undefined}
+                            title={ad.title}
                         />
-                    )}
+                    ))}
                 </div>
             </div>
         </div>
