@@ -132,9 +132,7 @@ export default function Show({ article }: ShowProps) {
             showIndicators={true}
           />
         ) : (
-          <p className="text-gray-500 text-center my-4">
-            No media available for this article.
-          </p>
+          undefined
         )}
 
         {/* Content Section */}
