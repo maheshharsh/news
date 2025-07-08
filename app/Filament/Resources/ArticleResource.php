@@ -48,28 +48,28 @@ class ArticleResource extends Resource
                     ->required()
                     ->columnSpanFull(),
 
-                // FileUpload::make('featured_image')
-                //     ->image()
-                //     ->directory('articles')
-                //     ->disk('public')
-                //     ->preserveFilenames(),
-
-                FileUpload::make('featured_images')
-                    ->multiple()
+                FileUpload::make('featured_image')
                     ->image()
                     ->directory('articles')
                     ->disk('public')
-                    ->preserveFilenames()
-                    ->relationship('media', 'file_name') // Links to the media relationship, storing file name in file_name column
-                    ->enableReordering()
-                    ->enableOpen()
-                    ->enableDownload()
-                    ->afterStateUpdated(function ($state, $set, $record) {
-                        // Optional: Sync media records if needed
-                        if ($record && $state) {
-                            $record->media()->whereNotIn('file_name', $state)->delete();
-                        }
-                    }),
+                    ->preserveFilenames(),
+
+                // FileUpload::make('featured_images')
+                //     ->multiple()
+                //     ->image()
+                //     ->directory('articles')
+                //     ->disk('public')
+                //     ->preserveFilenames()
+                //     ->relationship('media', 'file_name') // Links to the media relationship, storing file name in file_name column
+                //     ->enableReordering()
+                //     ->enableOpen()
+                //     ->enableDownload()
+                //     ->afterStateUpdated(function ($state, $set, $record) {
+                //         // Optional: Sync media records if needed
+                //         if ($record && $state) {
+                //             $record->media()->whereNotIn('file_name', $state)->delete();
+                //         }
+                //     }),
 
                 DateTimePicker::make('published_at'),
 
