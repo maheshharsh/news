@@ -9,15 +9,15 @@ interface NewsCardProps {
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ imageUrl, title, content, category, link }) => {
+   // Default image URL (use a public asset or external placeholder)
+   const defaultImage = "/images/default_image.jpg"; // Adjust to match your public directory structure
+
   return (
     <div className="border border-gray-300 mt-2 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200">
       <img
-        src={imageUrl}
+        src={imageUrl ? imageUrl : defaultImage}
         alt={title}
         className="w-full h-48 object-cover"
-        onError={(e) => {
-          e.currentTarget.src = "https://via.placeholder.com/300x200?text=Image+Not+Available";
-        }}
       />
       <div className="p-4">
         {category && (

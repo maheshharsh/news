@@ -14,6 +14,7 @@ import {
 import sanitizeHtml from "sanitize-html";
 import axios from "axios";
 
+
 interface Props {
     articles: Article[];
     headlines: HeadlinesProps[];
@@ -135,18 +136,15 @@ export default function Home({ articles, headlines, commodities }: Props) {
                                     href={`/articles/${article.id}`}
                                     className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden block"
                                 >
-                                    {(article.image || defaultImage) && (
-                                        <img
-                                            src={article.image || defaultImage}
-                                            alt={article.title}
-                                            className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                                e.currentTarget.onerror = null;
-                                                e.currentTarget.src =
-                                                    "https://via.placeholder.com/800x400?text=News+Image";
-                                            }}
-                                        />
-                                    )}
+                                    <img
+                                        src={
+                                            article.image
+                                                ? article.image
+                                                : defaultImage
+                                        }
+                                        alt={article.title}
+                                        className="w-full h-full object-cover"
+                                    />
 
                                     <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-4">
                                         <h2 className="text-2xl font-bold mb-2">

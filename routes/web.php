@@ -6,11 +6,6 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HeadlinesController;
 
-// Route::get('/', function () {
-//     return inertia('Home');
-// });
-
-
 
 // home page
 Route::get('/', [ArticleController::class, 'home'])->name('articles.index');
@@ -23,5 +18,5 @@ Route::get('/advertisements', [AdvertisementController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
 
 // slug redirect
-Route::get('/{slug}', [ArticleController::class, 'category'])->name('articles.show');
+Route::get('/{slug}', [ArticleController::class, 'category'])->name('articles.slug');
 

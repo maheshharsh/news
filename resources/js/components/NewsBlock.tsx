@@ -59,14 +59,13 @@ function NewsBlock({ title, category, articles }: NewsBlockProps) {
                                 <img
                                     src={
                                         articles[0].image ||
-                                        defaultImage ||
-                                        "https://via.placeholder.com/800x400?text=News+Image"
+                                        defaultImage 
                                     }
                                     alt={articles[0].title}
                                     className="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-105"
                                     onError={(e) => {
                                         console.log(`Failed to load image for ${articles[0].title}:`, e.currentTarget.src);
-                                        e.currentTarget.src = "https://via.placeholder.com/800x400?text=News+Image";
+                                        e.currentTarget.src = defaultImage;
                                     }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -101,14 +100,13 @@ function NewsBlock({ title, category, articles }: NewsBlockProps) {
                                     <img
                                         src={
                                             article.image ||
-                                            defaultImage ||
-                                            "https://via.placeholder.com/200/200?text=News+Image"
+                                            defaultImage 
                                         }
                                         alt={article.title}
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                                         onError={(e) => {
                                             console.log(`Failed to load image for ${article.title}:`, e.currentTarget.src);
-                                            e.currentTarget.src = "https://via.placeholder.com/200/200?text=News+Image";
+                                            e.currentTarget.src = defaultImage;
                                         }}
                                     />
                                 </div>

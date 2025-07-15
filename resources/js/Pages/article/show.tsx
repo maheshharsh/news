@@ -120,7 +120,7 @@ export default function Show({ article }: ShowProps) {
             items={article.media.map((media, index) => (
               <img
                 key={index}
-                src={media.path || defaultImage}
+                src={media.path ? media.path : defaultImage}
                 alt={media.alt || `${article.title} media ${index + 1}`}
                 className="w-full h-64 object-cover rounded-xl"
                 onError={handleImageError}
