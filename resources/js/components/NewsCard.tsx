@@ -25,10 +25,6 @@ export default function NewsCard({ article }: NewsCardProps) {
                         }
                         alt={article.title}
                         className="w-full h-64 sm:h-48 object-cover"
-                        onError={(e) => {
-                            e.currentTarget.src =
-                            defaultImage;
-                        }}
                     />
                     {/* Overlay for readability */}
                     <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">

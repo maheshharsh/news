@@ -11,6 +11,7 @@ export interface Article {
     is_carousel?: boolean;
     created_at: string;
     published_at: string;
+    excerpt: string;
     category_name: string;
 }
 

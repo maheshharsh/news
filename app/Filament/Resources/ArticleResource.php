@@ -43,7 +43,7 @@ class ArticleResource extends Resource
                     ->required(),
 
                 TextInput::make('excerpt')
-                    ->maxLength(255),
+                    ->maxLength(255)->required(),
 
                 RichEditor::make('content')
                     ->required()
@@ -78,7 +78,7 @@ class ArticleResource extends Resource
                         Toggle::make('is_published')->label('Published'),
                         Toggle::make('is_carousel')->label('Carousel'),
                     ]),
-                DateTimePicker::make('published_at'),
+                DateTimePicker::make('published_at')->required(),
 
                 TextInput::make('meta_title')
                     ->maxLength(255),
