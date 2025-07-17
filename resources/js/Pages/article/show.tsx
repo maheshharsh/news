@@ -89,7 +89,7 @@ export default function Show({ article }: ShowProps) {
         {/* Featured Image */}
         <div className="mb-6">
           <img
-            src={article.image || defaultImage}
+            src={article.image ? article.image : defaultImage}
             alt={article.title}
             className="w-full h-64 sm:h-96 object-cover rounded-xl"
             onError={handleImageError}
